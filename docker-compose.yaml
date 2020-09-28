@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  nest-server:
+    container_name: nest-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - ./:/nest-typeorm
+    ports:
+      - '$PORT_SERVER:$PORT_SERVER'
+    depends_on:
+      - nest-db
+    restart: always
+    networks: 
+    - core_network
+
+  nest-db:
+    container_name: nest-db
+    image: mysql
+    env_file: .env
+    volumes:
+      - .docker/db-data:/var/lib/mysql
+    environment:
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+    ports:
+      - "$PORT_DB:$PORT_DB"
+    restart: always
+    networks: 
+      - core_network
+
+networks:
+  core_network:
+    driver: bridge
+    name: core_network
