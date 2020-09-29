@@ -14,12 +14,12 @@ services:
     depends_on:
       - nest-db
     restart: always
-    networks: 
-    - core_network
+    # networks: 
+    # - common_network
 
   nest-db:
     container_name: nest-db
-    image: mysql
+    image: mysql:5.7
     env_file: .env
     volumes:
       - .docker/db-data:/var/lib/mysql
@@ -30,11 +30,23 @@ services:
       MYSQL_DATABASE: $MYSQL_DATABASE
     ports:
       - "$PORT_DB:$PORT_DB"
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
-    networks: 
-      - core_network
+    # networks: 
+    #   - common_network
 
+  adminer:
+    image: adminer
+    restart: always
+    env_file: .env
+    ports:
+      - "$PORT_ADMINER:$PORT_ADMINER"
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DESIGN: 'lucas-sandery' # theme
+    depends_on: 
+      - nest-db
 networks:
-  core_network:
+  common_network:
     driver: bridge
-    name: core_network
+    name: common_network
