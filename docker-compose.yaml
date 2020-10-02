@@ -44,7 +44,7 @@ services:
     ports:
       - "$PORT_ADMINER:$PORT_ADMINER"
     environment:
-      ADMINER_DEFAULT_SERVER: mysql
+      # ADMINER_DEFAULT_SERVER: mysql
       ADMINER_DESIGN: "lucas-sandery" # theme
     depends_on:
       - nest-db
