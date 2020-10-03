@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   nest-server:
@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/nest-typeorm
     ports:
-      - "$PORT_SERVER:$PORT_SERVER"
+      - '$PORT_SERVER:$PORT_SERVER'
     depends_on:
       - nest-db
     restart: always
@@ -18,37 +18,39 @@ services:
       - common_network
 
   nest-db:
-    container_name: $MYSQL_HOST
+    container_name: nest-db
     image: mysql:5.7
     env_file: .env
     volumes:
-      - database/:/var/lib/mysql
+      - .docker/database/:/var/lib/mysql
     environment:
       MYSQL_USER: $MYSQL_USER
       MYSQL_PASSWORD: $MYSQL_PASSWORD
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: $MYSQL_DATABASE
     ports:
-      - "$PORT_DB:$PORT_DB"
+      - '$PORT_DB:$PORT_DB'
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     expose:
-      - "$PORT_DB"
+      - '$PORT_DB'
     networks:
       - common_network
 
   adminer:
-    container_name: "adminer-mysql"
+    container_name: 'adminer-mysql'
     image: adminer
-    restart: always
     env_file: .env
     ports:
-      - "$PORT_ADMINER:$PORT_ADMINER"
+      - '$PORT_ADMINER:$PORT_ADMINER'
     environment:
       ADMINER_DEFAULT_SERVER: mysql
-      ADMINER_DESIGN: "lucas-sandery" # theme
+      ADMINER_DESIGN: 'lucas-sandery' # theme
+    restart: always
     depends_on:
       - nest-db
+    networks:
+      - common_network
 networks:
   common_network:
     driver: bridge

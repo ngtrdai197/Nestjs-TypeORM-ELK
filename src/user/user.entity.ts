@@ -6,15 +6,19 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ name: 'first_name' })
   firstName: string;
 
-  @Column()
+  @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ default: true })
+  @Column({ default: true, name: 'is_active' })
   isActive: boolean;
 
-  @OneToMany(() => Photo, photo => photo.user)
-  photos: Photo[]
+  @OneToMany(
+    () => Photo,
+    photo => photo.user,
+    { nullable: true },
+  )
+  photos: Photo[];
 }
