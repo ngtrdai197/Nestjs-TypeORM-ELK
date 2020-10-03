@@ -15,7 +15,7 @@ import { PhotoModule } from './photo/photo.module';
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('MYSQL_HOST'),
+        host: 'nest-db',
         port: configService.get<number>('PORT_DB'),
         username: configService.get<string>('MYSQL_USER'),
         password: configService.get<string>('MYSQL_PASSWORD'),

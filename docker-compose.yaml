@@ -18,11 +18,11 @@ services:
       - common_network
 
   nest-db:
-    container_name: nest-db
+    container_name: $MYSQL_HOST
     image: mysql:5.7
     env_file: .env
     volumes:
-      - .docker/db-data:/var/lib/mysql
+      - database/:/var/lib/mysql
     environment:
       MYSQL_USER: $MYSQL_USER
       MYSQL_PASSWORD: $MYSQL_PASSWORD
@@ -38,13 +38,14 @@ services:
       - common_network
 
   adminer:
+    container_name: "adminer-mysql"
     image: adminer
     restart: always
     env_file: .env
     ports:
       - "$PORT_ADMINER:$PORT_ADMINER"
     environment:
-      # ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DEFAULT_SERVER: mysql
       ADMINER_DESIGN: "lucas-sandery" # theme
     depends_on:
       - nest-db
