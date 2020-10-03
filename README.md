@@ -9,4 +9,4 @@ $ docker-compose up --build
 ```
 
 ## Author
-[Dai Nguyen]('https://github.com/ngtrdai197')
+[Dai Nguyen](https://github.com/ngtrdai197)
