@@ -13,7 +13,7 @@ import { PhotoModule } from './photo/photo.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         type: 'mysql',
         host: 'nest-db',
         port: configService.get<number>('PORT_DB'),

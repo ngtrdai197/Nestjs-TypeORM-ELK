@@ -29,10 +29,7 @@ export class PhotoService {
     ]);
     photo.url = url;
     photo.user = user;
-    console.log('user :>> ', user);
-    console.log('photo :>> ', photo);
-    return null;
-    // // return this.photoRepo.save(photo);
+    return this.photoRepo.save(photo);
   }
 
   getPhotos(): Promise<Photo[]> {
