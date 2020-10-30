@@ -24,12 +24,6 @@ services:
     volumes:
       - .docker/database/:/var/lib/mysql
       - .docker/config_mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
-
-    environment:
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: $MYSQL_DATABASE
     ports:
       - '$PORT_DB:$PORT_DB'
     command: --default-authentication-plugin=mysql_native_password
@@ -46,7 +40,7 @@ services:
     ports:
       - '$PORT_ADMINER:$PORT_ADMINER'
     environment:
-      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DEFAULT_SERVER: nest-db
       ADMINER_DESIGN: 'lucas-sandery' # theme
     restart: always
     depends_on:
