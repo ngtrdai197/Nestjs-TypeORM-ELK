@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+
 import { CreatePhotoDto, EditPhotoDto } from './dtos';
 import { PhotoService } from './photo.service';
 

@@ -1,20 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, QueryRunner, Repository } from 'typeorm';
+
 import { CreateUserDto, EditUserDto } from './dtos';
 import { User } from './user.entity';
+import { BaseService } from '../common/services/base.service';
 
 @Injectable()
-export class UserService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
-
-  create(newUser: CreateUserDto): Promise<User> {
-    return this.userRepo.save(newUser);
+export class UserService extends BaseService {
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    protected readonly connection: Connection,
+  ) {
+    super(connection);
   }
 
-  async update(update: EditUserDto): Promise<User> {
-    await this.userRepo.update(update.id, update);
-    return this.userRepo.findOne(update.id);
+  async create(newUser: CreateUserDto) {
+    const handler = (queryRunner: QueryRunner) => {
+      const { manager } = queryRunner;
+      manager.save(User, newUser);
+    };
+    await this.performActionInTransaction(handler);
+  }
+
+  async update(update: EditUserDto) {
+    const handler = (queryRunner: QueryRunner) => {
+      const { manager } = queryRunner;
+      manager.update(User, update.id, update);
+    };
+    await this.performActionInTransaction(handler);
   }
 
   findAll(): Promise<User[]> {
@@ -29,6 +43,10 @@ export class UserService {
   }
 
   async remove(id: string): Promise<void> {
-    await this.userRepo.delete(id);
+    const handler = (queryRunner: QueryRunner) => {
+      const { manager } = queryRunner;
+      manager.delete(User, id);
+    };
+    await this.performActionInTransaction(handler);
   }
 }
