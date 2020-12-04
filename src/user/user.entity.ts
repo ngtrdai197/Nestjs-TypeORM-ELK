@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { hash } from 'bcryptjs';
 
 import { Photo } from '../photo/photo.entity';
 
@@ -6,6 +7,15 @@ import { Photo } from '../photo/photo.entity';
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ name: 'email' })
+  email: string;
+
+  @Column({ name: 'password' })
+  password: string;
+
+  @Column({ name: 'salt' })
+  salt: string;
 
   @Column({ name: 'first_name' })
   firstName: string;
@@ -21,5 +31,10 @@ export class User {
     photo => photo.userId,
     { nullable: true, cascade: true },
   )
-  photoIds: number[];
+  photoIds: string[];
+
+  public async validatePassword(password: string) {
+    const hashed = await hash(password, this.salt);
+    return this.password === hashed;
+  }
 }

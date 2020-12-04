@@ -6,6 +6,7 @@ import { PhotoModule } from './photo/photo.module';
 import { DatabaseModule } from './common/database/database.module';
 import { User } from './user/user.entity';
 import { Photo } from './photo/photo.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Photo } from './photo/photo.entity';
     DatabaseModule.forRoot([User, Photo]),
     UserModule,
     PhotoModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

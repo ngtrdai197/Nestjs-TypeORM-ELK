@@ -8,11 +8,11 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(newUser: CreateUserDto): Promise<User | void> {
+  public async create(newUser: CreateUserDto): Promise<User | void> {
     return this.userRepository.createUser({ newUser, hasTransaction: true });
   }
 
-  async update(update: EditUserDto): Promise<boolean | void> {
+  public async update(update: EditUserDto): Promise<boolean | void> {
     return this.userRepository.updateUser({
       editUser: update,
       hasTransaction: true,
@@ -29,5 +29,9 @@ export class UserService {
 
   public async remove(id: number): Promise<boolean | void> {
     return this.userRepository.deleteUser({ id, hasTransaction: true });
+  }
+
+  public getUserByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ email });
   }
 }
