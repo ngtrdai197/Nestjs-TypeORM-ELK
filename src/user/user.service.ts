@@ -1,52 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, QueryRunner, Repository } from 'typeorm';
 
 import { CreateUserDto, EditUserDto } from './dtos';
 import { User } from './user.entity';
-import { BaseService } from '../common/services/base.service';
+import { UserRepository } from './user.repository';
 
 @Injectable()
-export class UserService extends BaseService {
-  constructor(
-    @InjectRepository(User) private userRepo: Repository<User>,
-    protected readonly connection: Connection,
-  ) {
-    super(connection);
+export class UserService {
+  constructor(private readonly userRepository: UserRepository) {}
+
+  async create(newUser: CreateUserDto): Promise<User | void> {
+    return this.userRepository.createUser({ newUser, hasTransaction: true });
   }
 
-  async create(newUser: CreateUserDto) {
-    const handler = (queryRunner: QueryRunner) => {
-      const { manager } = queryRunner;
-      manager.save(User, newUser);
-    };
-    await this.performActionInTransaction(handler);
+  async update(update: EditUserDto): Promise<boolean | void> {
+    return this.userRepository.updateUser({
+      editUser: update,
+      hasTransaction: true,
+    });
   }
 
-  async update(update: EditUserDto) {
-    const handler = (queryRunner: QueryRunner) => {
-      const { manager } = queryRunner;
-      manager.update(User, update.id, update);
-    };
-    await this.performActionInTransaction(handler);
+  public getUsers(): Promise<User[]> {
+    return this.userRepository.getUsers();
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepo.find();
+  public getUserById(id: number): Promise<User> {
+    return this.userRepository.getUser(id);
   }
 
-  findOne(id: number): Promise<User> {
-    return this.userRepo
-      .createQueryBuilder('user')
-      .where('user.id = :id', { id })
-      .getOne();
-  }
-
-  async remove(id: string): Promise<void> {
-    const handler = (queryRunner: QueryRunner) => {
-      const { manager } = queryRunner;
-      manager.delete(User, id);
-    };
-    await this.performActionInTransaction(handler);
+  public async remove(id: number): Promise<boolean | void> {
+    return this.userRepository.deleteUser({ id, hasTransaction: true });
   }
 }

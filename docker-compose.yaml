@@ -19,14 +19,12 @@ services:
 
   nest-db:
     container_name: nest-db
-    image: mysql:5.7
+    image: postgres
     env_file: .env
     volumes:
-      - .docker/database/:/var/lib/mysql
-      - .docker/config_mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - .docker/database/:/var/lib/postgresql/data
     ports:
       - '$PORT_DB:$PORT_DB'
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     expose:
       - '$PORT_DB'

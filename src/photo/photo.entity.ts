@@ -18,8 +18,8 @@ export class Photo {
 
   @ManyToOne(
     () => User,
-    user => user.photos,
+    user => user.photoIds,
   )
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  userId: number;
 }

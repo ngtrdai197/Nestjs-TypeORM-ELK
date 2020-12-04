@@ -1,56 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, QueryRunner, Repository } from 'typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { Photo } from './photo.entity';
 import { CreatePhotoDto, EditPhotoDto } from './dtos';
+import { PhotoRepository } from './photo.repository';
+import { Photo } from './photo.entity';
 import { UserService } from '../user/user.service';
-import { BaseService } from '../common/services/base.service';
 
 @Injectable()
-export class PhotoService extends BaseService {
+export class PhotoService {
   constructor(
-    @InjectRepository(Photo) private photoRepo: Repository<Photo>,
-    private userService: UserService,
-    protected readonly connection: Connection,
-  ) {
-    super(connection);
-  }
+    private readonly photoRepository: PhotoRepository,
+    private readonly userService: UserService,
+  ) {}
 
-  async create(newPhoto: CreatePhotoDto) {
-    const handler = async (queryRunner: QueryRunner) => {
-      const manager = queryRunner.manager;
-      const { url, userId } = newPhoto;
-      const user = await this.userService.findOne(userId);
-      manager.save(Photo, {
-        url,
-        user,
+  async createPhoto(newPhoto: CreatePhotoDto) {
+    const found = await this.userService.getUserById(newPhoto.userId);
+    if (!found)
+      throw new BadRequestException({
+        statusCode: 400,
+        msg: "User does'n exists",
       });
-    };
-    this.performActionInTransaction(handler);
+    return this.photoRepository.save(newPhoto);
   }
 
   async updatePhoto(editPhoto: EditPhotoDto) {
-    const handler = async (queryRunner: QueryRunner) => {
-      const { manager } = queryRunner;
-      const { id, url, userId } = editPhoto;
-      const [photo, user] = await Promise.all([
-        this.photoRepo.findOne(id),
-        this.userService.findOne(userId),
-      ]);
-      photo.url = url;
-      photo.user = user;
-      manager.save(Photo, { url, user });
-    };
-
-    await this.performActionInTransaction(handler);
+    const exist = await this.photoRepository.findOne(editPhoto.id);
+    if (!exist)
+      throw new BadRequestException({
+        statusCode: 400,
+        msg: "Photo does'n exists",
+      });
+    return this.photoRepository.updatePhoto(editPhoto);
   }
 
   getPhotos(): Promise<Photo[]> {
-    return this.photoRepo
-      .createQueryBuilder('photo')
-      .leftJoinAndSelect('photo.user', 'user')
-      .andWhere('user.firstName = :name', { name: 'Dai' })
-      .getMany();
+    return this.photoRepository.getPhotos();
   }
 }

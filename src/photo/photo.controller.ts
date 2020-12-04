@@ -9,7 +9,7 @@ export class PhotoController {
 
   @Post()
   async createPhoto(@Body() newPhoto: CreatePhotoDto) {
-    return this.photoService.create(newPhoto);
+    return this.photoService.createPhoto(newPhoto);
   }
 
   @Put()

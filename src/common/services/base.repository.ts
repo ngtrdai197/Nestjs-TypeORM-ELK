@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { Connection, QueryRunner } from 'typeorm';
+import { Connection, QueryRunner, Repository } from 'typeorm';
 
-@Injectable()
-export class BaseService {
-  constructor(protected readonly connection: Connection) {}
+export abstract class BaseRepository<T = any> extends Repository<T> {
+  constructor(protected readonly connection: Connection) {
+    super();
+  }
 
-  protected async performActionInTransaction(
+  public async performActionInTransaction(
     handler: (queryRunner: QueryRunner) => any,
   ) {
     const queryRunner = this.connection.createQueryRunner();

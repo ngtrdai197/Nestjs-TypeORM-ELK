@@ -18,8 +18,8 @@ export class User {
 
   @OneToMany(
     () => Photo,
-    photo => photo.user,
-    { nullable: true },
+    photo => photo.userId,
+    { nullable: true, cascade: true },
   )
-  photos: Photo[];
+  photoIds: number[];
 }
