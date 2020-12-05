@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePhotoDto, EditPhotoDto } from './dtos';
 import { PhotoRepository } from './photo.repository';
 import { Photo } from './photo.entity';
-import { UserService } from '../user/user.service';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class PhotoService {

@@ -1,6 +1,6 @@
 import { Connection, EntityRepository, getRepository } from 'typeorm';
 
-import { BaseRepository } from '../common/services/base.repository';
+import { BaseRepository } from '@/common/services/base.repository';
 import { EditPhotoDto } from './dtos';
 import { Photo } from './photo.entity';
 

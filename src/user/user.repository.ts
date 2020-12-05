@@ -7,7 +7,7 @@ import {
 
 import { CreateUserDto, EditUserDto } from './dtos';
 import { User } from './user.entity';
-import { BaseRepository } from '../common/services/base.repository';
+import { BaseRepository } from '@/common/services/base.repository';
 
 @EntityRepository(User)
 export class UserRepository extends BaseRepository<User> {

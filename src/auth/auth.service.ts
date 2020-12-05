@@ -6,11 +6,11 @@ import {
 import { hash, genSalt } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from '../user/user.entity';
 import { CreateUserDto } from '../user/dtos';
 import { AuthRepository } from './auth.repository';
 import { CredentialDto } from './dtos/credential.dto';
 import { IPayload } from './interfaces/payload.interface';
+import { User } from '@/user/user.entity';
 
 @Injectable()
 export class AuthService {

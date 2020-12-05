@@ -1,7 +1,7 @@
 import { EntityRepository, Connection } from 'typeorm';
 
-import { User } from '../user/user.entity';
-import { BaseRepository } from '../common/services/base.repository';
+import { BaseRepository } from '@/common/services/base.repository';
+import { User } from '@/user/user.entity';
 
 @EntityRepository(User)
 export class AuthRepository extends BaseRepository<User> {
