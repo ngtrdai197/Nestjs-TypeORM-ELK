@@ -1,52 +1,58 @@
 version: '3.7'
 
 services:
-  nest-server:
-    container_name: nest-server
+  typeorm-server:
+    container_name: typeorm-server
     build:
       context: ./
       dockerfile: Dockerfile
-    env_file: .env
+    environment:
+      - PORT_SERVER
     volumes:
       - ./:/nest-typeorm
     ports:
-      - '$PORT_SERVER:$PORT_SERVER'
+      - '${PORT_SERVER}:${PORT_SERVER}'
     depends_on:
-      - nest-db
+      - typeorm-db
     restart: always
     networks:
-      - common_network
+      - typeorm_network
 
-  nest-db:
-    container_name: nest-db
+  typeorm-db:
+    container_name: typeorm-db
     image: postgres
-    env_file: .env
     volumes:
       - .docker/database/:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PORT_DB
     ports:
-      - '$PORT_DB:$PORT_DB'
+      - '${PORT_DB}:${PORT_DB}'
     restart: always
     expose:
-      - '$PORT_DB'
+      - '${PORT_DB}'
     networks:
-      - common_network
+      - typeorm_network
 
   adminer:
     container_name: 'adminer-mysql'
     image: adminer
-    env_file: .env
-    ports:
-      - '$PORT_ADMINER:$PORT_ADMINER'
     environment:
-      ADMINER_DEFAULT_SERVER: nest-db
+      ADMINER_DEFAULT_SERVER: typeorm-db
       ADMINER_DESIGN: 'lucas-sandery' # theme
+    ports:
+      - '${PORT_ADMINER}:${PORT_ADMINER}'
     restart: always
     depends_on:
-      - nest-db
+      - typeorm-db
     networks:
-      - common_network
+      - typeorm_network
+
 networks:
-  common_network:
+  typeorm_network:
     driver: bridge
-    name: common_network
+    name: typeorm_network
     external: true

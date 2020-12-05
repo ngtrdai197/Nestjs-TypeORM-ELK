@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: `${process.env.NODE_ENV || 'development'}.env`,
       isGlobal: true,
     }),
     DatabaseModule.forRoot([User, Photo]),
@@ -20,4 +20,8 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log('NODE_ENV :>> ', process.env.NODE_ENV);
+  }
+}
