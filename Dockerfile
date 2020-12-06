@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /nest-typeorm
+WORKDIR /typeorm-server
 
 COPY package*.json ./
 

@@ -11,7 +11,7 @@ $ source start-docker.development.sh
 ## How to stop and remove container ?
 
 ```bash
-$ source development.sh && docker-compose down
+$ source stop-docker.development.sh
 ```
 ## Author
 [Dai Nguyen](https://github.com/ngtrdai197)
