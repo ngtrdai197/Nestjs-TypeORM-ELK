@@ -23,11 +23,11 @@ export class UserService {
     return this.userRepository.getUsers();
   }
 
-  public getUserById(id: number): Promise<User> {
+  public getUserById(id: string): Promise<User> {
     return this.userRepository.getUser(id);
   }
 
-  public async remove(id: number): Promise<boolean | void> {
+  public async remove(id: string): Promise<boolean | void> {
     return this.userRepository.deleteUser({ id, hasTransaction: true });
   }
 

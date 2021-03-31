@@ -1,13 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import { Photo } from '../photo/photo.entity';
+import { BaseEntity } from '@/common/models/base.entity';
 
 @Entity('user')
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity{
   @Column({ name: 'email' })
   email: string;
 

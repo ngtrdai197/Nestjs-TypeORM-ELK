@@ -1,5 +1,5 @@
 export class EditUserDto {
-    id?: number;
+    id?: string;
 
     firstName: string;
 

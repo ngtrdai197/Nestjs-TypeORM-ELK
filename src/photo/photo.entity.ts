@@ -1,17 +1,15 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
 import { User } from '@/user/user.entity';
+import { BaseEntity } from '@/common/models/base.entity';
 
 @Entity('photo')
-export class Photo {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Photo extends BaseEntity{
 
   @Column({ name: 'url_photo' })
   url: string;
@@ -21,5 +19,5 @@ export class Photo {
     user => user.photoIds,
   )
   @JoinColumn({ name: 'user_id' })
-  userId: number;
+  userId: string;
 }

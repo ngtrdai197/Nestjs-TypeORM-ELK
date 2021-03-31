@@ -5,13 +5,13 @@ If you without `docker`. You need to install it :tada:
 
 ## How to run ?
 ```bash
-$ source start-docker.development.sh
+$ source docker-up.development.sh
 ```
 
 ## How to stop and remove container ?
 
 ```bash
-$ source stop-docker.development.sh
+$ source docker-down.development.sh
 ```
 ## Author
 [Dai Nguyen](https://github.com/ngtrdai197)

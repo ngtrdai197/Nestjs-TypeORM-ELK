@@ -1,5 +1,5 @@
 export class EditPhotoDto {
-  id: number;
+  id: string;
   url?: string;
   userId?: number;
 }

@@ -50,7 +50,7 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async deleteUser(options: {
-    id: number;
+    id: string;
     hasTransaction?: boolean;
   }): Promise<boolean | void> {
     const { id, hasTransaction = false } = options;
@@ -68,7 +68,7 @@ export class UserRepository extends BaseRepository<User> {
     return this.performActionInTransaction(handler);
   }
 
-  public getUser(id: number): Promise<User> {
+  public getUser(id: string): Promise<User> {
     return getRepository(User)
       .createQueryBuilder('user')
       .where('user.id = :id', { id })

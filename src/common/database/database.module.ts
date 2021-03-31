@@ -18,6 +18,7 @@ export class DatabaseModule {
             database: configService.get<string>('POSTGRES_DB'),
             synchronize: true,
             entities,
+            retryDelay: 5000
           }),
           imports: [ConfigModule],
           inject: [ConfigService],
