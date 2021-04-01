@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { CreatePhotoDto, EditPhotoDto } from './dtos';
 import { PhotoRepository } from './photo.repository';
-import { Photo } from './photo.entity';
+import { PhotoEntity } from './photo.entity';
 import { UserService } from '@/user/user.service';
 
 @Injectable()
@@ -10,14 +10,15 @@ export class PhotoService {
   constructor(
     private readonly photoRepository: PhotoRepository,
     private readonly userService: UserService,
-  ) {}
+  ) {
+  }
 
-  async createPhoto(newPhoto: CreatePhotoDto) {
-    const found = await this.userService.getUserById(newPhoto.userId);
+  async createPhoto(userId: string, newPhoto: CreatePhotoDto) {
+    const found = await this.userService.getUserById(userId);
     if (!found)
       throw new BadRequestException({
         statusCode: 400,
-        msg: "User does'n exists",
+        msg: 'User does not exists',
       });
     return this.photoRepository.save(newPhoto);
   }
@@ -27,12 +28,12 @@ export class PhotoService {
     if (!exist)
       throw new BadRequestException({
         statusCode: 400,
-        msg: "Photo does'n exists",
+        msg: 'Photo does not exists',
       });
     return this.photoRepository.updatePhoto(editPhoto);
   }
 
-  getPhotos(): Promise<Photo[]> {
+  getPhotos(): Promise<PhotoEntity[]> {
     return this.photoRepository.getPhotos();
   }
 }

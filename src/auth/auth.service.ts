@@ -10,7 +10,7 @@ import { CreateUserDto } from '../user/dtos';
 import { AuthRepository } from './auth.repository';
 import { CredentialDto } from './dtos/credential.dto';
 import { IPayload } from './interfaces/payload.interface';
-import { User } from '@/user/user.entity';
+import { UserEntity } from '@/user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
     return await this.authRepository.findOne({ email });
   }
 
-  public async signUp(newUser: CreateUserDto): Promise<User> {
+  public async signUp(newUser: CreateUserDto): Promise<UserEntity> {
     const found = await this.authRepository.findOne({ email: newUser.email });
     if (found)
       throw new ConflictException({
@@ -31,7 +31,7 @@ export class AuthService {
         msg: 'Email already exists',
       });
 
-    const record = new User();
+    const record = new UserEntity();
     const salt = await genSalt();
     record.email = newUser.email;
     record.firstName = newUser.firstName;
@@ -70,7 +70,7 @@ export class AuthService {
   private hashPassword = async (password: string, salt: string) =>
     hash(password, salt);
 
-  private genToken = async (currentUser: User): Promise<string> => {
+  private genToken = async (currentUser: UserEntity): Promise<string> => {
     const { id, email, firstName, lastName } = currentUser;
     const payload: IPayload = {
       id,

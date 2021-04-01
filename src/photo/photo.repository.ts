@@ -2,17 +2,17 @@ import { Connection, EntityRepository, getRepository } from 'typeorm';
 
 import { BaseRepository } from '@/common/services/base.repository';
 import { EditPhotoDto } from './dtos';
-import { Photo } from './photo.entity';
+import { PhotoEntity } from './photo.entity';
 
-@EntityRepository(Photo)
-export class PhotoRepository extends BaseRepository<Photo> {
+@EntityRepository(PhotoEntity)
+export class PhotoRepository extends BaseRepository<PhotoEntity> {
   constructor(protected readonly connection: Connection) {
     super(connection);
   }
 
   async updatePhoto(editPhoto: EditPhotoDto) {
     const { id, url } = editPhoto;
-    return getRepository(Photo)
+    return getRepository(PhotoEntity)
       .createQueryBuilder('photo')
       .update()
       .set({
@@ -21,8 +21,8 @@ export class PhotoRepository extends BaseRepository<Photo> {
       .where('photo.id = :id', { id });
   }
 
-  getPhotos(): Promise<Photo[]> {
-    return getRepository(Photo)
+  getPhotos(): Promise<PhotoEntity[]> {
+    return getRepository(PhotoEntity)
       .createQueryBuilder('photo')
       .leftJoinAndSelect('photo.user', 'user')
       .andWhere('user.firstName = :name', { name: 'Dai' })

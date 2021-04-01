@@ -1,10 +1,13 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from '@/user/user.entity';
+import { PhotoEntity } from '@/photo/photo.entity';
 
 @Module({})
 export class DatabaseModule {
-  static forRoot(entities = []): DynamicModule {
+  static forRoot(): DynamicModule {
+    const entities: any[] = [UserEntity, PhotoEntity];
     return {
       module: DatabaseModule,
       imports: [
@@ -18,7 +21,7 @@ export class DatabaseModule {
             database: configService.get<string>('POSTGRES_DB'),
             synchronize: true,
             entities,
-            retryDelay: 5000
+            retryDelay: 5000,
           }),
           imports: [ConfigModule],
           inject: [ConfigService],

@@ -5,7 +5,7 @@ export abstract class BaseRepository<T = any> extends Repository<T> {
     super();
   }
 
-  public async performActionInTransaction(
+  protected async performActionInTransaction(
     handler: (queryRunner: QueryRunner) => any,
   ) {
     const queryRunner = this.connection.createQueryRunner();

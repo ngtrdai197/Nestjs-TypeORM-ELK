@@ -1,4 +1,7 @@
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+
 export class CreatePhotoDto {
-    url: string;
-    userId: string;
+  @IsString()
+  @IsNotEmpty()
+  url: string;
 }

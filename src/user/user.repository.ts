@@ -6,11 +6,11 @@ import {
 } from 'typeorm';
 
 import { CreateUserDto, EditUserDto } from './dtos';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { BaseRepository } from '@/common/services/base.repository';
 
-@EntityRepository(User)
-export class UserRepository extends BaseRepository<User> {
+@EntityRepository(UserEntity)
+export class UserRepository extends BaseRepository<UserEntity> {
   constructor(protected readonly connection: Connection) {
     super(connection);
   }
@@ -18,14 +18,14 @@ export class UserRepository extends BaseRepository<User> {
   public async createUser(options: {
     newUser: CreateUserDto;
     hasTransaction?: boolean;
-  }): Promise<User | void> {
+  }): Promise<UserEntity | void> {
     const { newUser, hasTransaction = false } = options;
     if (!hasTransaction) {
       return this.create(newUser);
     }
     const handler = (queryRunner: QueryRunner) => {
       const { manager } = queryRunner;
-      manager.save(User, newUser);
+      manager.save(UserEntity, newUser);
     };
     return this.performActionInTransaction(handler);
   }
@@ -44,7 +44,7 @@ export class UserRepository extends BaseRepository<User> {
     }
     const handler = (queryRunner: QueryRunner) => {
       const { manager } = queryRunner;
-      manager.update(User, editUser.id, editUser);
+      manager.update(UserEntity, editUser.id, editUser);
     };
     return this.performActionInTransaction(handler);
   }
@@ -63,20 +63,20 @@ export class UserRepository extends BaseRepository<User> {
     }
     const handler = (queryRunner: QueryRunner) => {
       const { manager } = queryRunner;
-      manager.delete(User, id);
+      manager.delete(UserEntity, id);
     };
     return this.performActionInTransaction(handler);
   }
 
-  public getUser(id: string): Promise<User> {
-    return getRepository(User)
+  public getUser(id: string): Promise<UserEntity> {
+    return getRepository(UserEntity)
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
       .getOne();
   }
 
   public async getUsers() {
-    return getRepository(User)
+    return getRepository(UserEntity)
       .createQueryBuilder()
       .select()
       .getMany();

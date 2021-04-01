@@ -4,20 +4,23 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-import { User } from '@/user/user.entity';
-import { BaseEntity } from '@/common/models/base.entity';
+import { UserEntity } from '@/user/user.entity';
+import { BaseEntity } from '@/common/entities/base.entity';
 
 @Entity('photo')
-export class Photo extends BaseEntity{
+export class PhotoEntity extends BaseEntity{
 
   @Column({ name: 'url_photo' })
+  @IsNotEmpty()
+  @IsString()
   url: string;
 
   @ManyToOne(
-    () => User,
-    user => user.photoIds,
+    () => UserEntity,
+    user => user.photos,
   )
-  @JoinColumn({ name: 'user_id' })
-  userId: string;
+  @JoinColumn({ name: 'user_id', referencedColumnName: "id" })
+  user: Promise<UserEntity>;
 }
