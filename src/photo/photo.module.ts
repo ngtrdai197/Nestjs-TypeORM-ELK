@@ -7,12 +7,8 @@ import { PhotoRepository } from './photo.repository';
 import { UserModule } from '@/user/user.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([PhotoRepository]),
-    UserModule,
-  ],
+  imports: [TypeOrmModule.forFeature([PhotoRepository]), UserModule],
   controllers: [PhotoController],
   providers: [PhotoService],
 })
-export class PhotoModule {
-}
+export class PhotoModule {}

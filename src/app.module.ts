@@ -13,8 +13,8 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     DatabaseModule.forRoot(),
+    PhotoModule,
     UserModule,
-    // PhotoModule, TODO: need to fix => error dependency
     AuthModule,
   ],
 })

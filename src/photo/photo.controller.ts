@@ -8,14 +8,14 @@ import { UserDto } from '@/user/dtos/user.dto';
 
 @Controller('photo')
 export class PhotoController {
-  constructor(private readonly photoService: PhotoService) {
-  }
+  constructor(private readonly photoService: PhotoService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async createPhoto(
     @CurrentUser() user: UserDto,
-    @Body() newPhoto: CreatePhotoDto) {
+    @Body() newPhoto: CreatePhotoDto,
+  ) {
     return this.photoService.createPhoto(user.id, newPhoto);
   }
 
