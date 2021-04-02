@@ -14,6 +14,8 @@
     "start:debug": "nest start --debug --watch",
     "serve:dev": "cross-env NODE_ENV=development ts-node-dev -r --cls tsconfig-paths/register src/main.ts",
     "start:prod": "cross-env NODE_ENV=production node -r tsconfig-paths/register dist/main",
+    "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n",
+    "migration:run": "ts-node node_modules/.bin/typeorm migration:run",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

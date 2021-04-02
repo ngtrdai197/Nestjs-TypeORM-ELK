@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { hash } from 'bcryptjs';
 
 import { PhotoEntity } from '../photo/photo.entity';
@@ -36,6 +36,11 @@ export class UserEntity extends BaseEntity {
   @IsBoolean()
   @IsNotEmpty()
   isActive: boolean;
+
+  @Column({ default: true, name: 'website' })
+  @IsString()
+  @IsOptional()
+  website?: string;
 
   @OneToMany(
     () => PhotoEntity,

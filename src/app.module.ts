@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     DatabaseModule.forRoot(),
     UserModule,
-    PhotoModule,
+    // PhotoModule, TODO: need to fix => error dependency
     AuthModule,
   ],
 })
