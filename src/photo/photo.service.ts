@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 
 import { CreatePhotoDto, EditPhotoDto } from './dtos';
 import { PhotoRepository } from './photo.repository';
@@ -9,9 +10,9 @@ import { UserService } from '@/user/user.service';
 export class PhotoService {
   constructor(
     private readonly photoRepository: PhotoRepository,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
-  ) {
-  }
+  ) {}
 
   async createPhoto(userId: string, newPhoto: CreatePhotoDto) {
     const found = await this.userService.getUserById(userId);
