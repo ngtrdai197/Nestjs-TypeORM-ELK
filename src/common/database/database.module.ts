@@ -11,8 +11,6 @@ export class DatabaseModule {
       imports: [
         TypeOrmModule.forRootAsync({
           useFactory: async (configService: ConfigService) => {
-            console.log(`configService.get<string>('POSTGRES_USER')`, configService.get<string>('POSTGRES_USER'))
-            console.log(`configService.get<string>('POSTGRES_PASSWORD')`, configService.get<string>('POSTGRES_PASSWORD'))
             return ({
               type: 'postgres',
               host: configService.get<string>('POSTGRES_HOST'),

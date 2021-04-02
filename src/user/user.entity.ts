@@ -20,7 +20,8 @@ export class UserEntity extends BaseEntity {
 
   @Column({ name: 'salt' })
   @IsString()
-  @IsNotEmpty() salt: string;
+  @IsNotEmpty()
+  salt: string;
 
   @Column({ name: 'first_name' })
   @IsString()
@@ -37,7 +38,7 @@ export class UserEntity extends BaseEntity {
   @IsNotEmpty()
   isActive: boolean;
 
-  @Column({ default: true, name: 'website' })
+  @Column({ name: 'website' })
   @IsString()
   @IsOptional()
   website?: string;
