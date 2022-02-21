@@ -24,7 +24,7 @@ export class PhotoRepository extends BaseRepository<PhotoEntity> {
   getPhotos(): Promise<PhotoEntity[]> {
     return getRepository(PhotoEntity)
       .createQueryBuilder('photo')
-      .leftJoinAndSelect('photo.user', 'user')
+      .leftJoinAndSelect('photo.user_id', 'user')
       .andWhere('user.firstName = :name', { name: 'Dai' })
       .getMany();
   }

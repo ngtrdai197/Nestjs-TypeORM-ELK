@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, Unique } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { hash } from 'bcryptjs';
 
@@ -6,6 +6,7 @@ import { PhotoEntity } from '../photo/photo.entity';
 import { BaseEntity } from '@/common/entities/base.entity';
 import { PhotoService } from '@/photo/photo.service';
 
+@Unique('t_user_uq_constraints_index', ['email'])
 @Entity('user')
 export class UserEntity extends BaseEntity {
   @Column({ name: 'email' })
@@ -46,7 +47,7 @@ export class UserEntity extends BaseEntity {
   @OneToMany(
     () => PhotoEntity,
     photo => photo.user,
-    { nullable: true, cascade: true },
+    { nullable: true, eager: false },
   )
   photos?: Promise<PhotoService[]>;
 
