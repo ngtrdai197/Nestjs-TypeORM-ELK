@@ -17,7 +17,7 @@ services:
     volumes:
       - ./:/nest-typeorm
     ports:
-      - '${PORT_SERVER}:${PORT_SERVER}'
+      - ${PORT_SERVER}:${PORT_SERVER}
     depends_on:
       - typeorm-db
     restart: always
@@ -29,7 +29,7 @@ services:
     image: postgres
     volumes:
       - ./.docker/database/:/var/lib/postgresql/data
-      - ./scripts/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+      # - ./scripts/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
     environment:
       - POSTGRES_HOST
       - POSTGRES_USER
@@ -37,10 +37,10 @@ services:
       - POSTGRES_DB
       - PORT_DB
     ports:
-      - '${PORT_DB}:${PORT_DB}'
+      - ${PORT_DB}:${PORT_DB}
     restart: always
     expose:
-      - '${PORT_DB}'
+      - ${PORT_DB}
     networks:
       - typeorm_network
 
@@ -51,13 +51,50 @@ services:
       ADMINER_DEFAULT_SERVER: ${POSTGRES_HOST}
       ADMINER_DESIGN: 'lucas-sandery' # theme
     ports:
-      - '${PORT_ADMINER}:${PORT_ADMINER}'
+      - ${PORT_ADMINER}:${PORT_ADMINER}
     restart: always
     depends_on:
       - typeorm-db
     networks:
       - typeorm_network
 
+  # Elasticsearch
+  typeorm-eslogs:
+    image: elasticsearch:7.8.0
+    container_name: typeorm-eslogs
+    volumes:
+      - ./.docker/elasticsearch_data:/usr/share/elasticsearch/data
+      - ./elastic/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+    networks:
+      - typeorm_network
+  # Kibana
+  typeorm-kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.0
+    container_name: typeorm-kibana
+    volumes:
+    - ./elastic/kibana.yaml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    networks:
+      - typeorm_network
+  # Logstash
+  typeorm-logstash:
+    image: logstash:7.8.1
+    container_name: typeorm-logstash
+    volumes:
+    - ./elastic/logging.conf:/usr/share/logstash/pipeline/logging.conf
+    - ./elastic/logstash.yaml:/usr/share/logstash/config/logstash.yml
+    ports:
+    - 1514:1514/udp
+    - 1515:1515
+    - 1515:1515/udp
+    networks:
+      - typeorm_network
 networks:
   typeorm_network:
     driver: bridge
