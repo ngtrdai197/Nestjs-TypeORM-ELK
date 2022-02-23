@@ -13,10 +13,6 @@ import * as logstash from 'winston-logstash-transport';
     BaseWinstonModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        console.log(
-          'configService',
-          configService.get<boolean>('IS_PRODUCTION'),
-        );
         const transports = Boolean(configService.get<boolean>('IS_PRODUCTION'))
           ? [
               new winston.transports.DailyRotateFile({

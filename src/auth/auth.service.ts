@@ -15,6 +15,7 @@ import { AuthRepository } from './auth.repository';
 import { CredentialDto } from './dtos/credential.dto';
 import { IPayload } from './interfaces/payload.interface';
 import { UserEntity } from '@/user/user.entity';
+import { tryStringify } from '@/common/utils/tryStringify';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
   }
 
   public async signUp(newUser: CreateUserDto): Promise<any> {
-    this.logger.log(`INPUT_SIGNUP_FUNCTION => ${JSON.stringify(newUser)}`);
+    this.logger.log(`INPUT_SIGNUP_FUNCTION => ${tryStringify(newUser)}`);
     const found = await this.authRepository.findOne({
       email: 'nguyendai.dev2@gmail.com',
     });

@@ -38,7 +38,7 @@ services:
       - PORT_DB
     ports:
       - ${PORT_DB}:${PORT_DB}
-    restart: always
+    restart: unless-stopped
     expose:
       - ${PORT_DB}
     networks:

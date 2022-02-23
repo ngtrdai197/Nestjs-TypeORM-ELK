@@ -94,7 +94,8 @@ export class DatabaseModule {
                 migrationsDir: 'src/migrations',
               },
               logging: true,
-              logger: new DBLogger(logger)
+              logger: new DBLogger(logger),
+              keepConnectionAlive: true,
             };
           },
           imports: [ConfigModule],
