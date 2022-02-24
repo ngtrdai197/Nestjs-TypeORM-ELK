@@ -6,8 +6,7 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
-
-const { LogstashTransport } = require('winston-logstash-transport');
+import { LogstashTransport } from 'winston-logstash-transport';
 
 @Module({
   imports: [
