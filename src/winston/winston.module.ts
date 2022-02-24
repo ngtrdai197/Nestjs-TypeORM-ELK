@@ -6,7 +6,8 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
-import * as logstash from 'winston-logstash-transport';
+
+const { LogstashTransport } = require('winston-logstash-transport');
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import * as logstash from 'winston-logstash-transport';
           format: winston.format.json(),
           transports: [
             ...transports,
-            new logstash.LogstashTransport({
+            new LogstashTransport({
               host: 'typeorm-logstash',
               port: 1514,
             }),
